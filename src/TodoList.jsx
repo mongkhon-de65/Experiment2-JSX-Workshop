@@ -1,20 +1,20 @@
 // src/TodoList.jsx
-
 import React from 'react';
+import TodoItem from './TodoItem'; // 🔽 Import
 
-// 🔽 รับ toggleTodo เพิ่ม
-function TodoList({ todos, deleteTodo, toggleTodo }) {
+function TodoList({ todos, deleteTodo, toggleTodo, editTodo }) {
   return (
     <ul className="todo-list">
       {todos.map(todo => (
-        // 🔽 เพิ่ม className แบบมีเงื่อนไข
-        <li key={todo.id} className={`todo-item ${todo.completed ? 'completed' : ''}`}>
-          {/* 🔽 เพิ่ม onClick และเปลี่ยน span */}
-          <span onClick={() => toggleTodo(todo.id)}>
-            {todo.text}
-          </span>
-          <button onClick={() => deleteTodo(todo.id)}>ลบ</button>
-        </li>
+        // 🔽 เรียกใช้ TodoItem และส่ง props ต่อไป
+        <TodoItem
+          key={todo.id}
+          todo={todo}
+          deleteTodo={deleteTodo}
+          toggleTodo={toggleTodo}
+          editTodo={editTodo}
+          
+        />
       ))}
     </ul>
   );
