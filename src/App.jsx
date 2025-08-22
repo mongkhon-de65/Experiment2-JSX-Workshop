@@ -1,30 +1,24 @@
 // src/App.jsx
-
 import React, { useState } from 'react';
 import TodoList from './TodoList';
 import TodoForm from './TodoForm';
+import { TodoContext } from './contexts/TodoContext'; // 🔽 Import
 import './App.css';
 
 function App() {
   const [todos, setTodos] = useState([
-    { id: 1, text: 'เรียนรู้ React Hooks', completed: true },
-    { id: 2, text: 'ทำ Mini Project', completed: false },
+    { id: 1, text: 'เรียนรู้ useContext', completed: true },
+    { id: 2, text: 'ทำความเข้าใจ Prop Drilling', completed: false },
   ]);
 
   const addTodo = (text) => {
-    const newTodo = {
-      id: Date.now(),
-      text: text,
-      completed: false,
-    };
-    setTodos([...todos, newTodo]);
+    setTodos([...todos, { id: Date.now(), text, completed: false }]);
   };
 
   const deleteTodo = (id) => {
     setTodos(todos.filter(todo => todo.id !== id));
   };
 
-  // 🔽 เพิ่มฟังก์ชันนี้
   const toggleTodo = (id) => {
     setTodos(
       todos.map(todo =>
@@ -33,13 +27,32 @@ function App() {
     );
   };
 
+  const editTodo = (id, newText) => {
+    setTodos(
+      todos.map(todo =>
+        todo.id === id ? { ...todo, text: newText } : todo
+      )
+    );
+  };
+
+  // 🔽 สร้าง object ที่จะส่งผ่าน context
+  const todoContextValue = {
+    todos,
+    addTodo,
+    deleteTodo,
+    toggleTodo,
+    editTodo,
+  };
+
   return (
-    <div className="app">
-      <h1>My To-Do List</h1>
-      <TodoForm addTodo={addTodo} />
-      {/* 🔽 ส่ง toggleTodo เป็น prop */}
-      <TodoList todos={todos} deleteTodo={deleteTodo} toggleTodo={toggleTodo} />
-    </div>
+    // 🔽 ครอบด้วย Provider และส่ง value
+    <TodoContext.Provider value={todoContextValue}>
+      <div className="app">
+        <h1>My To-Do List (with Context)</h1>
+        <TodoForm />
+        <TodoList />
+      </div>
+    </TodoContext.Provider>
   );
 }
 

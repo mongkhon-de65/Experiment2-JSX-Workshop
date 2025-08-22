@@ -1,14 +1,16 @@
 // src/TodoForm.jsx
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react'; // 🔽 import useContext
+import { TodoContext } from './contexts/TodoContext'; // 🔽 Import Context
 
-function TodoForm({ addTodo }) { // รับฟังก์ชัน addTodo มาจาก props
+function TodoForm() { // 🔽 ไม่ต้องรับ props แล้ว
+  const { addTodo } = useContext(TodoContext); // 🔽 ดึงฟังก์ชันมาจาก context
   const [inputValue, setInputValue] = useState('');
 
   const handleSubmit = (e) => {
-    e.preventDefault(); // ป้องกันไม่ให้ฟอร์ม refresh หน้า
-    if (!inputValue.trim()) return; // ไม่เพิ่มถ้าค่าว่าง
+    e.preventDefault();
+    if (!inputValue.trim()) return;
     addTodo(inputValue);
-    setInputValue(''); // ล้างค่าใน input field
+    setInputValue('');
   };
 
   return (

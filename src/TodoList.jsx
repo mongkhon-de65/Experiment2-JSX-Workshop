@@ -1,20 +1,15 @@
 // src/TodoList.jsx
-import React from 'react';
-import TodoItem from './TodoItem'; // 🔽 Import
+import React, { useContext } from 'react';
+import TodoItem from './TodoItem';
+import { TodoContext } from './contexts/TodoContext';
 
-function TodoList({ todos, deleteTodo, toggleTodo, editTodo }) {
+function TodoList() { // 🔽 ไม่ต้องรับ props แล้ว
+  const { todos } = useContext(TodoContext); // 🔽 ดึง state มาจาก context
+
   return (
     <ul className="todo-list">
       {todos.map(todo => (
-        // 🔽 เรียกใช้ TodoItem และส่ง props ต่อไป
-        <TodoItem
-          key={todo.id}
-          todo={todo}
-          deleteTodo={deleteTodo}
-          toggleTodo={toggleTodo}
-          editTodo={editTodo}
-          
-        />
+        <TodoItem key={todo.id} todo={todo} />
       ))}
     </ul>
   );

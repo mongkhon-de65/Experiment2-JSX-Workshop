@@ -1,7 +1,9 @@
 // src/TodoItem.jsx
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { TodoContext } from './contexts/TodoContext';
 
-function TodoItem({ todo, deleteTodo, toggleTodo, editTodo }) { // 🔽 รับ editTodo
+function TodoItem({ todo }) { // 🔽 รับแค่ todo ก็พอ
+  const { deleteTodo, toggleTodo, editTodo } = useContext(TodoContext); // 🔽 ดึงฟังก์ชันมาจาก context
   const [isEditing, setIsEditing] = useState(false);
   const [newText, setNewText] = useState(todo.text);
 
@@ -12,25 +14,23 @@ function TodoItem({ todo, deleteTodo, toggleTodo, editTodo }) { // 🔽 รั�
     }
   };
 
+  // ... (ส่วน JSX เหมือนเดิมทุกประการ)
   return (
-    <li className={`todo-item ${todo.completed ? 'completed' : ''}`}>
+     <li className={`todo-item ${todo.completed ? 'completed' : ''}`}>
       {isEditing ? (
-        // 🔽 UI สำหรับโหมดแก้ไข
         <input
           type="text"
           value={newText}
           onChange={(e) => setNewText(e.target.value)}
-          onBlur={handleSave} // บันทึกเมื่อ focus หลุด
-          onKeyPress={(e) => e.key === 'Enter' && handleSave()} // บันทึกเมื่อกด Enter
-          autoFocus // focus อัตโนมัติเมื่อแสดงผล
+          onBlur={handleSave}
+          onKeyPress={(e) => e.key === 'Enter' && handleSave()}
+          autoFocus
         />
       ) : (
-        // UI ปกติ
         <span onClick={() => toggleTodo(todo.id)}>
           {todo.text}
         </span>
       )}
-
       <div>
         {isEditing ? (
           <button onClick={handleSave} className="save-btn">บันทึก</button>
