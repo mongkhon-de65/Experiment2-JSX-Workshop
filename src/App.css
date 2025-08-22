@@ -65,10 +65,16 @@ h1 {
   padding: 0.75rem;
   background: #fafafa;
   border-bottom: 1px solid #eee;
+  cursor: pointer;
 }
 
 .todo-item:last-child {
   border-bottom: none;
+}
+
+.todo-item.completed span {
+  text-decoration: line-through;
+  color: #999;
 }
 
 .todo-item button {
